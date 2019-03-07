@@ -12,7 +12,6 @@
 *.pch
 
 # Compiled Dynamic libraries
-*.so
 *.dylib
 *.dll
 
@@ -30,3 +29,11 @@
 *.exe
 *.out
 *.app
+
+cmake-build-debug/
+
+CMakeFiles/
+
+cmake_install.cmake
+CMakeCache.txt
+
