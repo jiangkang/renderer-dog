@@ -4,15 +4,15 @@
 
 #include <iostream>
 #include <string>
-#include <core/SkImageEncoder.h>
-#include <core/SkFontMgr.h>
-#include <core/SkFont.h>
-#include <core/SkTextBlob.h>
-#include <SDL2/SDL_video.h>
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL.h>
-#include <core/SkRRect.h>
-#include <core/SkImage.h>
+#include "core/SkImageEncoder.h"
+#include "core/SkFontMgr.h"
+#include "core/SkFont.h"
+#include "core/SkTextBlob.h"
+#include "SDL2/SDL_video.h"
+#include "SDL2/SDL_render.h"
+#include "SDL2/SDL.h"
+#include "core/SkRRect.h"
+#include "core/SkImage.h"
 #include "renderer.h"
 
 void saveAsPng(const char *filename, SkBitmap bitmap) {

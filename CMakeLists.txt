@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.10)
 project(renderer-go)
 
 # 这里需要换成你自己的skia项目路径
-set(SKIA /Users/jiangkang/OpenProjects/skia)
+set(SKIA skia)
 
 
 include_directories(

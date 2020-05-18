@@ -5,9 +5,9 @@
 #ifndef KRENDERER_RENDERER_H
 #define KRENDERER_RENDERER_H
 
-#include <core/SkBitmap.h>
-#include <core/SkCanvas.h>
-#include <SDL2/SDL_quit.h>
+#include "core/SkBitmap.h"
+#include "core/SkCanvas.h"
+#include "SDL2/SDL_quit.h"
 
 //创建RGBA结构体
 struct RGBA {
