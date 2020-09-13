@@ -11,6 +11,19 @@ using namespace std;
 const int WIDTH = 1000;
 const int HEIGHT = 600;
 
+SDL_Texture* LoadImg(const char *filename,SDL_Renderer *renderer){
+    SDL_Surface *image = IMG_Load(filename);
+    if (!image){
+        cout << "加载图片失败：" << SDL_GetError() << endl;
+        return nullptr;
+    }
+
+    // 如果使用硬件加速，则必须将Surface转换成Texture
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer,image);
+    SDL_FreeSurface(image);
+    return texture;
+}
+
 void showImage() {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         cout << "初始化失败" << endl;
@@ -30,15 +43,8 @@ void showImage() {
         return;
     }
 
-    SDL_Surface *image = IMG_Load("/Volumes/T5/CppPractice/renderer-dog/res/demo.jpg");
-    if (!image){
-        cout << "加载图片失败：" << SDL_GetError() << endl;
-        return;
-    }
-
     // 如果使用硬件加速，则必须将Surface转换成Texture
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer,image);
-    SDL_FreeSurface(image);
+    SDL_Texture *texture = LoadImg("/Volumes/T5/CppPractice/renderer-dog/res/demo.jpg",renderer);
 
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer,texture, nullptr, nullptr);
