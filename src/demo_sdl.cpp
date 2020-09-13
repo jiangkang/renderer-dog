@@ -24,6 +24,14 @@ SDL_Texture* LoadImg(const char *filename,SDL_Renderer *renderer){
     return texture;
 }
 
+void applySurface(int x ,int y, SDL_Texture *texture, SDL_Renderer *renderer){
+    SDL_Rect pos;
+    pos.x = x;
+    pos.y = y;
+    SDL_QueryTexture(texture, nullptr, nullptr,&pos.w,&pos.h);
+    SDL_RenderCopy(renderer,texture, nullptr,&pos);
+}
+
 void showImage() {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         cout << "初始化失败" << endl;

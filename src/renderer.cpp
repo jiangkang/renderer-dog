@@ -15,6 +15,7 @@
 #include "core/SkImage.h"
 #include "renderer.h"
 
+using namespace std;
 
 static void handle_error() {
     const char *error = SDL_GetError();
@@ -125,67 +126,54 @@ SDL_Rect create_rect(SDL_Surface *surface) {
     return src;
 }
 
+const int WIDTH = 1000;
+const int HEIGHT = 600;
 void drawBySDL() {
-    //声明窗口
-    SDL_Window *window;
-    //声明绘图表面
-    SDL_Surface *surface;
-    //声明渲染器
-    SDL_Renderer *renderer;
-    //声明纹理
-    SDL_Texture *texture;
-    //声明Bitmap
-    SkBitmap skBitmap = initBitmap(100, 100);
-    //声明RGBA结构体
-    RGBA rgba;
-    //声明矩形
-    SDL_Rect rect;
-    //声明窗口的宽高
-    int width = 800;
-    int height = 480;
-    //初始化SDL为视频显示
-    SDL_Init(SDL_INIT_EVERYTHING);
-    //创建窗口
-    window = SDL_CreateWindow("Hello Skia", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height,
-                              SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
-    if (window == NULL) {
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+        cout << "初始化失败" << endl;
+        return;
+    }
+    SDL_Window *window = SDL_CreateWindow("Show Image",
+                                          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                          WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
+    if (window == nullptr) {
+        cout << "创建Window失败：" << SDL_GetError() << endl;
         return;
     }
 
-    SkCanvas canvas(skBitmap);
-    draw(&canvas);
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, 0, SDL_RENDERER_ACCELERATED);
+    if (renderer == nullptr) {
+        cout << "创建Renderer失败：" << SDL_GetError() << endl;
+        return;
+    }
 
-    //通过Bitmap的像素数据创建表面
-    surface = SDL_CreateRGBSurfaceFrom(skBitmap.getPixels(), width, height, 32, width * 4, rgba.rmask, rgba.gmask,
-                                       rgba.bmask, rgba.amask);
-    //通过SDL_Surface创建矩形
-    rect = create_rect(surface);
-    //创建渲染器
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    //清理渲染器
+    SkBitmap skBitmap = initBitmap(WIDTH,HEIGHT);
+    SkCanvas skCanvas(skBitmap);
+    drawShape(&skCanvas);
+
+    RGBA rgba;
+    SDL_Surface *surface = SDL_CreateRGBSurfaceFrom(skBitmap.getPixels(), WIDTH, HEIGHT, 32, WIDTH * 4, rgba.rmask, rgba.gmask,
+                             rgba.bmask, rgba.amask);
+
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer,surface);
+
     SDL_RenderClear(renderer);
-    //创建纹理
-    texture = SDL_CreateTextureFromSurface(renderer, surface);
-    //辅助纹理到渲染器
-    SDL_RenderCopy(renderer, texture, nullptr, &rect);
-    //显示到窗口
+    SDL_Rect rect = create_rect(surface);
+    SDL_RenderCopy(renderer,texture, nullptr, &rect);
     SDL_RenderPresent(renderer);
-    //延时5秒钟
-    SDL_Delay(5000);
 
-    std::cout << "输入任意字符然后回车终止进程: ";
-
-    char *cmd;
-    std::cin >> cmd;
-    //释放表面
-    SDL_FreeSurface(surface);
-    //释放纹理
-    SDL_DestroyTexture(texture);
-    //释放渲染器
+    SDL_Event windowEvent;
+    while (true){
+        if (SDL_PollEvent(&windowEvent)){
+            if (windowEvent.type == SDL_QUIT){
+                std::cout << "终止程序" << std::endl;
+                break;
+            }
+        }
+    }
     SDL_DestroyRenderer(renderer);
-    //释放窗口
+    SDL_DestroyTexture(texture);
     SDL_DestroyWindow(window);
-    //结束SDL
     SDL_Quit();
 }
 
@@ -196,7 +184,4 @@ void testSkia() {
     draw(&canvas);
     saveAsPng("file0.png", skBitmap);
 }
-
-const int WIDTH = 600;
-const int HEIGHT = 600;
 

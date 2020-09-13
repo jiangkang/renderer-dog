@@ -89,8 +89,8 @@ rebuild_cache/fast: rebuild_cache
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/local/Cellar/cmake/3.17.3/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/local/Cellar/cmake/3.17.3/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -197,6 +197,33 @@ src/demo_sdl.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/renderer-dog.dir/build.make CMakeFiles/renderer-dog.dir/src/demo_sdl.cpp.s
 .PHONY : src/demo_sdl.cpp.s
 
+src/demo_skia.o: src/demo_skia.cpp.o
+
+.PHONY : src/demo_skia.o
+
+# target to build an object file
+src/demo_skia.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/renderer-dog.dir/build.make CMakeFiles/renderer-dog.dir/src/demo_skia.cpp.o
+.PHONY : src/demo_skia.cpp.o
+
+src/demo_skia.i: src/demo_skia.cpp.i
+
+.PHONY : src/demo_skia.i
+
+# target to preprocess a source file
+src/demo_skia.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/renderer-dog.dir/build.make CMakeFiles/renderer-dog.dir/src/demo_skia.cpp.i
+.PHONY : src/demo_skia.cpp.i
+
+src/demo_skia.s: src/demo_skia.cpp.s
+
+.PHONY : src/demo_skia.s
+
+# target to generate assembly for a file
+src/demo_skia.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/renderer-dog.dir/build.make CMakeFiles/renderer-dog.dir/src/demo_skia.cpp.s
+.PHONY : src/demo_skia.cpp.s
+
 src/renderer.o: src/renderer.cpp.o
 
 .PHONY : src/renderer.o
@@ -239,6 +266,9 @@ help:
 	@echo "... src/demo_sdl.o"
 	@echo "... src/demo_sdl.i"
 	@echo "... src/demo_sdl.s"
+	@echo "... src/demo_skia.o"
+	@echo "... src/demo_skia.i"
+	@echo "... src/demo_skia.s"
 	@echo "... src/renderer.o"
 	@echo "... src/renderer.i"
 	@echo "... src/renderer.s"

@@ -22,7 +22,8 @@ int main(int args, char *argv[]) {
     // SkBitmap bmp;
     // saveAsPng("line.png", bitmap);
 //    MinSDLExample();
-    showImage();
+//    showImage();
+    drawBySDL();
     return 0;
 }
 
