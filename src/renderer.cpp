@@ -15,6 +15,13 @@
 #include "core/SkImage.h"
 #include "renderer.h"
 
+
+static void handle_error() {
+    const char *error = SDL_GetError();
+    SkDebugf("SDL Error: %s\n", error);
+    SDL_ClearError();
+}
+
 void saveAsPng(const char *filename, SkBitmap bitmap) {
     sk_sp<SkData> encodedData = SkEncodeBitmap(bitmap, SkEncodedImageFormat::kPNG, 100);
     FILE *pFile = fopen(filename, "wb+");
@@ -28,13 +35,14 @@ void saveAsPng(const char *filename, SkBitmap bitmap) {
 
 SkBitmap initBitmap(int width, int height) {
     SkBitmap skBitmap;
-    skBitmap.setInfo(SkImageInfo::Make(width, height, kBGRA_8888_SkColorType, kOpaque_SkAlphaType));
+    skBitmap.setInfo(SkImageInfo::Make(width, height, kRGBA_8888_SkColorType, kOpaque_SkAlphaType));
     skBitmap.allocPixels(); //转换成像素填充
     return skBitmap;
 }
 
 void draw(SkCanvas *canvas) {
-    std::cerr << "请调用具体的drawXXX方法!" << std::endl;
+//    std::cerr << "请调用具体的drawXXX方法!" << std::endl;
+    drawText(canvas);
 }
 
 void drawShape(SkCanvas *canvas) {
@@ -136,7 +144,7 @@ void drawBySDL() {
     int width = 800;
     int height = 480;
     //初始化SDL为视频显示
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_EVERYTHING);
     //创建窗口
     window = SDL_CreateWindow("Hello Skia", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height,
                               SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
@@ -163,7 +171,7 @@ void drawBySDL() {
     //显示到窗口
     SDL_RenderPresent(renderer);
     //延时5秒钟
-//    SDL_Delay(5000);
+    SDL_Delay(5000);
 
     std::cout << "输入任意字符然后回车终止进程: ";
 
@@ -181,10 +189,14 @@ void drawBySDL() {
     SDL_Quit();
 }
 
+
 void testSkia() {
     SkBitmap skBitmap = initBitmap(100, 100);
     SkCanvas canvas(skBitmap);
     draw(&canvas);
     saveAsPng("file0.png", skBitmap);
 }
+
+const int WIDTH = 600;
+const int HEIGHT = 600;
 

@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.10)
 
-project(renderer-go)
+project(renderer-dog)
 
 # 这里需要换成你自己的skia项目路径
 set(SKIA skia)
@@ -30,6 +30,7 @@ include_directories(
         ${SKIA}/include/utils/mac
         ${SKIA}/include/views
         /usr/local/Cellar/sdl2/2.0.9/include/
+        /usr/local/Cellar/sdl2_image/2.0.5/include
         include
 )
 
@@ -42,9 +43,12 @@ find_library(SDL_LIB SDL2 SDL2main /usr/local/Cellar/sdl2/2.0.9/lib)
 
 find_library(LIB_SKIA skia lib)
 
+find_library(LIB_SDL2_IMAGE SDL2_image /usr/local/Cellar/sdl2_image/2.0.5/lib)
+
 link_libraries(
         ${LIB_SKIA}
         ${SDL_LIB}
+        ${LIB_SDL2_IMAGE}
 )
 
-add_executable(renderer-go main.cpp ${SOURCE_DIR})
+add_executable(renderer-dog main.cpp ${SOURCE_DIR})
